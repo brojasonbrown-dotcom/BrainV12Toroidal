@@ -1,0 +1,32 @@
+{
+  "name": "rhuft-v6",
+  "version": "6.0.0",
+  "description": "Recursive Harmonic Unified Field Theory v6.0 — TypeScript computational framework",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "tsc --watch",
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "test": "echo 'No tests configured yet. Add a test runner such as vitest or jest.' && exit 0",
+    "lint": "eslint . --ext .ts,.tsx",
+    "lint:fix": "eslint . --ext .ts,.tsx --fix",
+    "format": "prettier --write \"**/*.{ts,tsx,js,json,md}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,json,md}\"",
+    "docs:serve": "echo 'No docs server configured yet. Consider vitepress, docsify, or mkdocs.' && exit 0"
+  },
+  "keywords": [
+    "RHUFT",
+    "geometric-framework",
+    "mathematical-ontology",
+    "typescript"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "eslint": "^8.57.0",
+    "prettier": "^3.2.0",
+    "typescript": "^5.4.0"
+  }
+}

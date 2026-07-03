@@ -1,0 +1,20 @@
+{
+  "name": "@raffy/metatron-v13-engine",
+  "version": "13.0.0",
+  "description": "RHUFT v13 — Metatron Fractal Node Engine (preserved from user backup)",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "node --experimental-specifier-resolution=node dist/test_engine.js",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "typescript": "^5.4.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

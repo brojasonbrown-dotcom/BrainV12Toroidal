@@ -1,0 +1,51 @@
+version: "3.8"
+
+services:
+  rhuft-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: rhuft-dev
+    working_dir: /app
+    volumes:
+      - .:/app
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+    command: ["npm", "run", "dev"]
+    stdin_open: true
+    tty: true
+
+  rhuft-test:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: rhuft-test
+    working_dir: /app
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=test
+    command: ["npm", "run", "test"]
+    profiles:
+      - test
+
+  rhuft-docs:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: rhuft-docs
+    working_dir: /app
+    volumes:
+      - .:/app
+      - /app/node_modules
+    ports:
+      - "4000:4000"
+    environment:
+      - NODE_ENV=development
+    command: ["npm", "run", "docs:serve"]
+    profiles:
+      - docs

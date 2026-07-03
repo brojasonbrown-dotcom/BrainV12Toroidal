@@ -1,0 +1,77 @@
+name: Daily Sync
+
+on:
+  schedule:
+    # Run every day at 06:00 UTC (adjust as needed)
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  daily-sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check last commit timestamp
+        id: last_commit
+        run: |
+          LAST_COMMIT=$(git log -1 --format=%ct)
+          NOW=$(date +%s)
+          DIFF=$((NOW - LAST_COMMIT))
+          echo "seconds_since_last_commit=$DIFF" >> "$GITHUB_OUTPUT"
+          echo "Last commit was $DIFF seconds ago"
+
+      - name: Skip if commit within 24 hours
+        id: should_run
+        run: |
+          if [ ${{ steps.last_commit.outputs.seconds_since_last_commit }} -lt 86400 ]; then
+            echo "A commit was made within the last 24 hours. Skipping automated sync."
+            echo "run=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "No commits in the last 24 hours. Running automated sync."
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Configure Git
+        if: steps.should_run.outputs.run == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Pull latest changes from remote
+        if: steps.should_run.outputs.run == 'true'
+        run: |
+          git pull --rebase origin ${{ github.ref_name }} || {
+            echo "Failed to pull latest changes. There may be conflicts.";
+            exit 1;
+          }
+
+      - name: Run verification suite
+        if: steps.should_run.outputs.run == 'true'
+        run: |
+          # Add your verification commands here
+          # npm ci
+          # npm run typecheck
+          # npm run test
+          # npm run lint
+          echo "Verification placeholder — update this step with real commands."
+
+      - name: Commit and push daily sync marker
+        if: steps.should_run.outputs.run == 'true'
+        run: |
+          DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          echo "$DATE" > .last-auto-sync
+          git add .last-auto-sync
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "chore: daily sync marker [skip ci]"
+            git push origin ${{ github.ref_name }}
+          fi

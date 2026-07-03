@@ -1,0 +1,51 @@
+{
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.organizeImports": "explicit"
+  },
+  "typescript.preferences.importModuleSpecifier": "relative",
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "files.exclude": {
+    "node_modules": true,
+    "dist": true,
+    "build": true,
+    ".refact": true
+  },
+  "files.watcherExclude": {
+    "node_modules/**": true,
+    "dist/**": true,
+    "build/**": true,
+    ".refact/**": true
+  },
+  "search.exclude": {
+    "node_modules": true,
+    "dist": true,
+    "build": true,
+    ".refact": true
+  },
+  "eslint.workingDirectories": ["."],
+  "prettier.singleQuote": true,
+  "prettier.trailingComma": "all",
+  "prettier.printWidth": 100,
+  "markdownlint.config": {
+    "MD013": false,
+    "MD024": false
+  },
+  "docker.commands.build": "${config:docker.dockerPath} build --pull --rm -f \"${dockerfile}\" -t ${tag} \"${context}\"",
+  "terminal.integrated.defaultProfile.linux": "bash",
+  "terminal.integrated.defaultProfile.osx": "bash",
+  "terminal.integrated.defaultProfile.windows": "Git Bash",
+  "remote.containers.defaultExtensions": [
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "ms-vscode.vscode-typescript-next",
+    "ms-azuretools.vscode-docker",
+    "github.copilot",
+    "github.copilot-chat"
+  ],
+  "containers.commands.build": "${config:docker.dockerPath} build --pull --rm -f \"${dockerfile}\" -t ${tag} \"${context}\""
+}

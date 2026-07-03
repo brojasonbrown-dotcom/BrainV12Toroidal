@@ -1,0 +1,94 @@
+{
+  "name": "RHUFT v6.0 Agent Workflow Config",
+  "version": "1.0.0",
+  "workflow": {
+    "mandatory": true,
+    "steps": [
+      { "id": "INTAKE", "name": "Parse Request", "skippable": false },
+      { "id": "CONTEXT_LOAD", "name": "Load Context", "skippable": false, "files": ["AGENTS.md", ".kimi/AGENTS.md", ".kimi/context/PROJECT_BRAINMAP.md", ".kimi/context/ARCHITECTURE_AUDIT.md", ".kimi/context/SECURITY_CHECKLIST.md", ".kimi/context/UI_UX_RULES.md", ".kimi/context/TRUTH_SOURCES.md"] },
+      { "id": "IMPACT_ANALYSIS", "name": "Impact Analysis", "skippable": false },
+      { "id": "SECURITY_AUDIT", "name": "Security Audit", "skippable": false },
+      { "id": "ARCHITECTURE_AUDIT", "name": "Architecture Audit", "skippable": false },
+      { "id": "BACKEND_AUDIT", "name": "Backend & Integration Audit", "skippable": false },
+      { "id": "FRONTEND_AUDIT", "name": "Frontend & UI/UX Audit", "skippable": false },
+      { "id": "PLANNING", "name": "Planning", "skippable": false, "requires_approval_for_significant_changes": true },
+      { "id": "IMPLEMENTATION", "name": "Implementation", "skippable": false, "rule": "minimal_change" },
+      { "id": "VERIFICATION", "name": "Verification", "skippable": false, "commands": ["npm run typecheck", "npm run test", "npm run lint"] },
+      { "id": "DOCUMENTATION", "name": "Documentation & Brainmap Update", "skippable": false },
+      { "id": "COMPLETION", "name": "Completion", "skippable": false, "mandatory_phrase": "I RECOMMEND WE FULLY FINISH THE CURRENT PLAN BEFORE CHANGING DIRECTION UNLESS YOU EXPLICITLY CHANGE THE PLAN." }
+    ]
+  },
+  "rules": {
+    "no_shortcuts": true,
+    "no_regression": true,
+    "no_mock_truth_sources_in_production": true,
+    "preserve_epistemic_tags": true,
+    "no_git_mutations_without_explicit_approval": true,
+    "subtask_skip_requires_user_approval": true,
+    "active_plan_must_finish": true,
+    "update_brainmap_on_structural_change": true
+  },
+  "context": {
+    "brainmap": ".kimi/context/PROJECT_BRAINMAP.md",
+    "architecture_audit": ".kimi/context/ARCHITECTURE_AUDIT.md",
+    "security_checklist": ".kimi/context/SECURITY_CHECKLIST.md",
+    "ui_ux_rules": ".kimi/context/UI_UX_RULES.md",
+    "truth_sources": ".kimi/context/TRUTH_SOURCES.md",
+    "task_template": ".kimi/tasks/TEMPLATE.md",
+    "plans_dir": ".kimi/plans",
+    "tasks_dir": ".kimi/tasks",
+    "archive_dir": ".kimi/tasks/archive"
+  },
+  "toolchain": {
+    "editor": "vscode",
+    "container": "docker",
+    "dev_container_config": ".devcontainer/devcontainer.json",
+    "docker_compose": "docker-compose.yml",
+    "version_control": "git",
+    "remote": "github",
+    "design_tool": "lovable",
+    "runtime": "node"
+  },
+  "daily_sync": {
+    "enabled": true,
+    "interval_hours": 24,
+    "github_action": ".github/workflows/daily-sync.yml",
+    "local_script": "scripts/daily-sync.sh",
+    "marker_file": ".last-auto-sync",
+    "commit_message": "chore: daily sync marker [skip ci]",
+    "conditions": [
+      "No commits in the last 24 hours",
+      "Pull latest changes before committing",
+      "Run verification suite before committing",
+      "Only commit the marker file if no other changes exist"
+    ],
+    "exceptions": [
+      "Manual commits within 24 hours skip the automated run",
+      "Merge conflicts halt the run and require human intervention"
+    ]
+  },
+  "ui": {
+    "discoverability": "progressive_disclosure",
+    "all_options_visible_or_one_click_away": true,
+    "sane_defaults": true,
+    "accessibility": "WCAG_2.1_AA",
+    "panel_modularity": true,
+    "responsive": true
+  },
+  "epistemic_tags": [
+    "MATH FACT",
+    "EST PHYS",
+    "EST MATH",
+    "OBSERVED",
+    "SPEC",
+    "PHIL",
+    "OVERRIDE",
+    "ACTIVE",
+    "TOROIDAL",
+    "SPHERICAL",
+    "COHERENCE",
+    "TODO",
+    "DEPRECATED",
+    "SECURITY"
+  ]
+}
